@@ -76,18 +76,65 @@ li a {
     stroke: #e0e1e1;
     opastate: 1;
 }
+
+.bs-example{
+    margin-top: 200px;
+    margin-left: 170px;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+#graphic{
+    position: absolute;
+    left:0px;
+    top:100px;
+}
+
+#candidate_one{
+    position: absolute;
+    left:150px;
+    top:50px;
+}
+
+#candidate_two{
+    position: absolute;
+    left:640px;
+    top:50px;
+}
+
+#menu1{
+    background-color: white;
+    border:grey 1px solid;
+    font-size: 14px;
+    outline:none;
+    height:30px;
+    top:120px;
+    left:150px;
+}
+
+#menu2{
+    background-color: white;
+    border:grey 1px solid;
+    font-size: 14px;
+    outline:none;
+    height:30px;
+    top:120px;
+    left:650px;
+}
+
+
 </style>
 
 <body>
-    <!-- <div class="bs-example">
+   <!--  <div class="bs-example">
     <ul class="nav nav-pills" role="tablist">
       <li role="presentation" class="dropdown">
         <a id="drop5" data-target="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-          Candidebates
+          Candidates
           <span class="caret"></span>
         </a>
         <ul id="menu" class="dropdown-menu" aria-labelledby="drop5">
-          <li class="candidebatename"><a data-target="#">Donald Trump</a></li>
+          <li class="candidebatename" selected="selected"><a data-target="#">Donald Trump</a></li>
           <li class="candidebatename"><a data-target="#">Jeb Bush</a></li>
           <li class="candidebatename"><a data-target="#">Rand Paul</a></li>
           <li class="candidebatename"><a data-target="#">Ben Carson</a></li>
@@ -106,13 +153,26 @@ li a {
       </li>
     </ul> 
   </div>  -->
+
+    <div id="candidate_one" style="float:left">
+        <img src="trump.png" >
+    </div>
+
+    <div id="candidate_two" style="float:left">
+        <img src="bush.png">
+    </div>
+
     <div id="graphic"></div>
     <script src="http://d3js.org/d3.v3.js"></script>
     <script>
     function drawGrahpics() {
 
-        var screenHeight = $(window).height();
-        var screenWidth = $(window).width();
+        // var screenHeight = $(window).height();
+        // var screenWidth = $(window).width();
+        // mobileScreen = (screenWidth < 420 ? true:false);
+        // maxScreen = (screenWidth > 960 ? true:false);
+
+
 
         var margin = {
                 top: 20,
@@ -120,8 +180,13 @@ li a {
                 bottom: 30,
                 left: 50
             },
-            width = screenWidth - margin.left - margin.right,
-            height = screenWidth * .5 - margin.top - margin.bottom;
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        // if(maxScreen){
+        //     width = 960 - margin.left - margin.right;
+        //     height = 500 - margin.top - margin.bottom;
+        // }
 
         var x = d3.scale.linear()
             .range([0, width / 2.5]);
@@ -177,16 +242,54 @@ li a {
             })
             .y(height / 2);
 
-        var svg = d3.select("body").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         d3.csv("data.csv", function(error, all1) {
 
 
             var dataAll = all1;
+
+            // Add the dropdown menus
+
+            var dropDown1 = d3.select("#graphic").append("select")
+                            .attr("name","candidate-list")
+                            .style("position","absolute")
+                            .attr("id","menu1");
+
+            var options = dropDown1.selectAll("option")
+                .data(dataAll.filter(function(d,i){
+                    if(d.debate === "1" & d.state === "CA"){
+                        return d;
+                    }
+                }))
+                .enter()
+                .append("option")
+                .text(function(d){return d.candidate;})
+                .attr("value", function(d){ return d.candidate;});
+
+            var dropDown2 = d3.select("#graphic").append("select")
+                            .attr("name","candidate-list")
+                            .style("position","absolute")
+                            .attr("id","menu2");
+
+            var options = dropDown2.selectAll("option")
+                .data(dataAll.filter(function(d,i){
+                    if(d.debate === "1" & d.state === "CA"){
+                        return d;
+                    }
+                }))
+                .enter()
+                .append("option")
+                .text(function(d){return d.candidate;})
+                .attr("value", function(d){ return d.candidate;});
+
+            // End of the dropdown menus
+
+            var svg = d3.select("#graphic").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 
             // draw the first slopegraph
 
@@ -254,12 +357,13 @@ li a {
                 .attr("transform", "translate(" + width / 5 + "," + width / 5 + ")")
                 .call(yAxis4);
 
-            svg.append("image")
-                .attr("xlink:href", "trump.png")
-                .attr("x", 7 * width / 60)
-                .attr("y", 0)
-                .attr("width", width / 6)
-                .attr("height", width / 6);
+            // svg.append("image")
+            //     .attr("xlink:href", "trump.png")
+            //     .attr("x", 7 * width / 60)
+            //     .attr("y", 0)
+            //     .attr("width", width / 6)
+            //     .attr("height", width / 6);
+
 
             var states1 = svg.selectAll(".state1")
                 .data(data1, function(d) {
@@ -423,12 +527,12 @@ li a {
                 .attr("transform", "translate(" + 4 * width / 5 + "," + width / 5 + ")")
                 .call(yAxis4);
 
-            svg.append("image")
-                .attr("xlink:href", "bush.png")
-                .attr("x", 43 * width / 60)
-                .attr("y", 0)
-                .attr("width", width / 6)
-                .attr("height", width / 6);
+            // svg.append("image")
+            //     .attr("xlink:href", "bush.png")
+            //     .attr("x", 43 * width / 60)
+            //     .attr("y", 0)
+            //     .attr("width", width / 6)
+            //     .attr("height", width / 6);
 
 
             var states2 = svg.selectAll(".state2")
