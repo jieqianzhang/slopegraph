@@ -58,7 +58,12 @@ li a {
     fill: none;
 }
 
-.x.axis text,
+.x.axis text {
+    font-size: 12px;
+    fill: grey;
+    opacity: .6;
+}
+
 .y.axis text {
     font-size: 10px;
     fill: grey;
@@ -188,10 +193,17 @@ li a {
         var y = d3.scale.linear()
             .range([0, height / 2]);
 
+        var xtickLabels = ["First Debate", "", "Second Debate", "", "Third Debate"];
+
         var xAxis = d3.svg.axis()
             .scale(x)
             .orient("top")
-            .ticks(0);
+            .tickPadding(30)
+            .ticks(3)
+            .innerTickSize(0)
+            .tickFormat(function(d, i) {
+                return xtickLabels[i];
+            });
 
         var yAxis = d3.svg.axis()
             .scale(y)
@@ -300,7 +312,12 @@ li a {
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-            // draw the first slopegraph
+
+
+
+
+
+            // ***************************************************************************** draw the first slopegraph  ************************************************************************************
 
             var data1 = dataAll.filter(function(d, i) {
                 if (d.candidate === "Donald Trump") {
@@ -348,7 +365,16 @@ li a {
             svg.append("g")
                 .attr("class", "y axis")
                 .attr("transform", "translate( 0," + width / 5 + ")")
-                .call(yAxis);
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                // .attr("x", -height / 2 - 30)
+                // .attr("y", 200)
+                .attr("dx", "-2.5em")
+                .attr("dy","-2.5em")
+                .style("text-anchor", "center")
+                .text("(Rank)")
+                .attr("id", "subtitle");
 
 
             svg.append("g")
@@ -365,14 +391,6 @@ li a {
                 .attr("class", "y axis")
                 .attr("transform", "translate(" + width / 5 + "," + width / 5 + ")")
                 .call(yAxis4);
-
-            // svg.append("image")
-            //     .attr("xlink:href", "trump.png")
-            //     .attr("x", 7 * width / 60)
-            //     .attr("y", 0)
-            //     .attr("width", width / 6)
-            //     .attr("height", width / 6);
-
 
             var states1 = svg.selectAll(".state1")
                 .data(data1, function(d) {
@@ -470,7 +488,7 @@ li a {
 
 
 
-            // draw the second slopegraph
+            // ***************************************************************************** draw the second slopegraph  ************************************************************************************
 
 
             var data2 = dataAll.filter(function(d, i) {
@@ -512,7 +530,7 @@ li a {
 
             svg.append("g")
                 .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
+                .attr("transform", "translate(" + 3 * width / 5 + "," + height + ")")
                 .call(xAxis);
 
             svg.append("g")
@@ -524,7 +542,16 @@ li a {
             svg.append("g")
                 .attr("class", "y axis")
                 .attr("transform", "translate(" + width + "," + width / 5 + ")")
-                .call(yAxis2);
+                .call(yAxis2)
+                .append("text")
+                .attr("transform", "rotate(90)")
+                // .attr("x", -height / 2 - 30)
+                // .attr("y", 200)
+                .attr("dx", "-.4em")
+                .attr("dy","-2.5em")
+                .style("text-anchor", "center")
+                .text("(Rank)")
+                .attr("id", "subtitle");
 
             svg.append("g")
                 .attr("class", "y axis")
@@ -668,35 +695,35 @@ li a {
 
                 var selectedPic1
 
-                if (selectedCandidate === "Jeb Bush"){
-                    selectedPic1 = "bush.png" ;
-                }else if(selectedCandidate === "Ben Carson"){
+                if (selectedCandidate === "Jeb Bush") {
+                    selectedPic1 = "bush.png";
+                } else if (selectedCandidate === "Ben Carson") {
                     selectedPic1 = "carson.png";
-                }else if(selectedCandidate === "Chris Christie"){
+                } else if (selectedCandidate === "Chris Christie") {
                     selectedPic1 = "christie.png";
-                }else if(selectedCandidate === "Ted Cruz"){
+                } else if (selectedCandidate === "Ted Cruz") {
                     selectedPic1 = "cruz.png";
-                }else if(selectedCandidate === "Carly Fiorina"){
+                } else if (selectedCandidate === "Carly Fiorina") {
                     selectedPic1 = "fiorina.png";
-                }else if(selectedCandidate === "Jim Gilmore"){
+                } else if (selectedCandidate === "Jim Gilmore") {
                     selectedPic1 = "gilmore.png";
-                }else if(selectedCandidate === "Lindsey Graham"){
+                } else if (selectedCandidate === "Lindsey Graham") {
                     selectedPic1 = "graham.png";
-                }else if(selectedCandidate === "Mike Huckabee"){
+                } else if (selectedCandidate === "Mike Huckabee") {
                     selectedPic1 = "huckabee.png";
-                }else if(selectedCandidate === "Bobby Jindal"){
+                } else if (selectedCandidate === "Bobby Jindal") {
                     selectedPic1 = "jindal.png";
-                }else if(selectedCandidate === "John Kasich"){
+                } else if (selectedCandidate === "John Kasich") {
                     selectedPic1 = "kasich.png";
-                }else if(selectedCandidate === "George Pataki"){
+                } else if (selectedCandidate === "George Pataki") {
                     selectedPic1 = "pataki.png";
-                }else if(selectedCandidate === "Rand Paul"){
+                } else if (selectedCandidate === "Rand Paul") {
                     selectedPic1 = "paul.png";
-                }else if(selectedCandidate === "Marco Rubio"){
+                } else if (selectedCandidate === "Marco Rubio") {
                     selectedPic1 = "rubio.png";
-                }else if(selectedCandidate === "Rick Santorum"){
+                } else if (selectedCandidate === "Rick Santorum") {
                     selectedPic1 = "santorum.png";
-                }else if(selectedCandidate === "Donald Trump"){
+                } else if (selectedCandidate === "Donald Trump") {
                     selectedPic1 = "trump.png";
                 };
 
@@ -753,35 +780,35 @@ li a {
 
                 var selectedPic2
 
-                if (selectedCandidate === "Jeb Bush"){
-                    selectedPic2 = "bush.png" ;
-                }else if(selectedCandidate === "Ben Carson"){
+                if (selectedCandidate === "Jeb Bush") {
+                    selectedPic2 = "bush.png";
+                } else if (selectedCandidate === "Ben Carson") {
                     selectedPic2 = "carson.png";
-                }else if(selectedCandidate === "Chris Christie"){
+                } else if (selectedCandidate === "Chris Christie") {
                     selectedPic2 = "christie.png";
-                }else if(selectedCandidate === "Ted Cruz"){
+                } else if (selectedCandidate === "Ted Cruz") {
                     selectedPic2 = "cruz.png";
-                }else if(selectedCandidate === "Carly Fiorina"){
+                } else if (selectedCandidate === "Carly Fiorina") {
                     selectedPic2 = "fiorina.png";
-                }else if(selectedCandidate === "Jim Gilmore"){
+                } else if (selectedCandidate === "Jim Gilmore") {
                     selectedPic2 = "gilmore.png";
-                }else if(selectedCandidate === "Lindsey Graham"){
+                } else if (selectedCandidate === "Lindsey Graham") {
                     selectedPic2 = "graham.png";
-                }else if(selectedCandidate === "Mike Huckabee"){
+                } else if (selectedCandidate === "Mike Huckabee") {
                     selectedPic2 = "huckabee.png";
-                }else if(selectedCandidate === "Bobby Jindal"){
+                } else if (selectedCandidate === "Bobby Jindal") {
                     selectedPic2 = "jindal.png";
-                }else if(selectedCandidate === "John Kasich"){
+                } else if (selectedCandidate === "John Kasich") {
                     selectedPic2 = "kasich.png";
-                }else if(selectedCandidate === "George Pataki"){
+                } else if (selectedCandidate === "George Pataki") {
                     selectedPic2 = "pataki.png";
-                }else if(selectedCandidate === "Rand Paul"){
+                } else if (selectedCandidate === "Rand Paul") {
                     selectedPic2 = "paul.png";
-                }else if(selectedCandidate === "Marco Rubio"){
+                } else if (selectedCandidate === "Marco Rubio") {
                     selectedPic2 = "rubio.png";
-                }else if(selectedCandidate === "Rick Santorum"){
+                } else if (selectedCandidate === "Rick Santorum") {
                     selectedPic2 = "santorum.png";
-                }else if(selectedCandidate === "Donald Trump"){
+                } else if (selectedCandidate === "Donald Trump") {
                     selectedPic2 = "trump.png";
                 };
 
