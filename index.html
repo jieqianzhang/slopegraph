@@ -151,10 +151,10 @@ li a {
     </ul> 
   </div>  -->
     <div id="candidate_one" style="float:left">
-        <img src="trump.png">
+        <img id="image1" src="trump.png">
     </div>
     <div id="candidate_two" style="float:left">
-        <img src="bush.png">
+        <img id="image2" src="bush.png">
     </div>
     <div id="graphic"></div>
     <script src="http://d3js.org/d3.v3.js"></script>
@@ -666,6 +666,42 @@ li a {
                     return d.state;
                 }).entries(data1);
 
+                var selectedPic1
+
+                if (selectedCandidate === "Jeb Bush"){
+                    selectedPic1 = "bush.png" ;
+                }else if(selectedCandidate === "Ben Carson"){
+                    selectedPic1 = "carson.png";
+                }else if(selectedCandidate === "Chris Christie"){
+                    selectedPic1 = "christie.png";
+                }else if(selectedCandidate === "Ted Cruz"){
+                    selectedPic1 = "cruz.png";
+                }else if(selectedCandidate === "Carly Fiorina"){
+                    selectedPic1 = "fiorina.png";
+                }else if(selectedCandidate === "Jim Gilmore"){
+                    selectedPic1 = "gilmore.png";
+                }else if(selectedCandidate === "Lindsey Graham"){
+                    selectedPic1 = "graham.png";
+                }else if(selectedCandidate === "Mike Huckabee"){
+                    selectedPic1 = "huckabee.png";
+                }else if(selectedCandidate === "Bobby Jindal"){
+                    selectedPic1 = "jindal.png";
+                }else if(selectedCandidate === "John Kasich"){
+                    selectedPic1 = "kasich.png";
+                }else if(selectedCandidate === "George Pataki"){
+                    selectedPic1 = "pakati.png";
+                }else if(selectedCandidate === "Rand Paul"){
+                    selectedPic1 = "paul.png";
+                }else if(selectedCandidate === "Marco Rubio"){
+                    selectedPic1 = "rubio.png";
+                }else if(selectedCandidate === "Rick Santorum"){
+                    selectedPic1 = "santorum.png";
+                }else if(selectedCandidate === "Donald Trump"){
+                    selectedPic1 = "trump.png";
+                };
+
+                document.getElementById("image1").src = selectedPic1;
+
                 // var values = line(data);
 
                 states1 = svg.selectAll(".state1")
@@ -714,6 +750,43 @@ li a {
                 data2 = d3.nest().key(function(d) {
                     return d.state;
                 }).entries(data2);
+
+                var selectedPic2
+
+                if (selectedCandidate === "Jeb Bush"){
+                    selectedPic2 = "bush.png" ;
+                }else if(selectedCandidate === "Ben Carson"){
+                    selectedPic2 = "carson.png";
+                }else if(selectedCandidate === "Chris Christie"){
+                    selectedPic2 = "christie.png";
+                }else if(selectedCandidate === "Ted Cruz"){
+                    selectedPic2 = "cruz.png";
+                }else if(selectedCandidate === "Carly Fiorina"){
+                    selectedPic2 = "fiorina.png";
+                }else if(selectedCandidate === "Jim Gilmore"){
+                    selectedPic2 = "gilmore.png";
+                }else if(selectedCandidate === "Lindsey Graham"){
+                    selectedPic2 = "graham.png";
+                }else if(selectedCandidate === "Mike Huckabee"){
+                    selectedPic2 = "huckabee.png";
+                }else if(selectedCandidate === "Bobby Jindal"){
+                    selectedPic2 = "jindal.png";
+                }else if(selectedCandidate === "John Kasich"){
+                    selectedPic2 = "kasich.png";
+                }else if(selectedCandidate === "George Pataki"){
+                    selectedPic2 = "pakati.png";
+                }else if(selectedCandidate === "Rand Paul"){
+                    selectedPic2 = "paul.png";
+                }else if(selectedCandidate === "Marco Rubio"){
+                    selectedPic2 = "rubio.png";
+                }else if(selectedCandidate === "Rick Santorum"){
+                    selectedPic2 = "santorum.png";
+                }else if(selectedCandidate === "Donald Trump"){
+                    selectedPic2 = "trump.png";
+                };
+
+                document.getElementById("image2").src = selectedPic2;
+
 
                 // var values = line(data);
 
