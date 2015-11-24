@@ -65,68 +65,65 @@ li a {
     opacity: .6;
 }
 
-.line {
+.line1,
+.line2 {
     fill: none;
     /*stroke:#c3574a;*/
     /*stroke-width:1px;*/
 }
-
 
 .tick line {
     stroke: #e0e1e1;
     opastate: 1;
 }
 
-.bs-example{
+.bs-example {
     margin-top: 200px;
     margin-left: 170px;
     font-family: 'Roboto', sans-serif;
 }
 
-
-#graphic{
+#graphic {
     position: absolute;
-    left:0px;
-    top:100px;
+    left: 0px;
+    top: 100px;
 }
 
-#candidate_one{
+#candidate_one {
     position: absolute;
-    left:150px;
-    top:50px;
+    left: 150px;
+    top: 50px;
 }
 
-#candidate_two{
+#candidate_two {
     position: absolute;
-    left:640px;
-    top:50px;
+    left: 640px;
+    top: 50px;
 }
 
-#menu1{
+#menu1 {
     background-color: white;
-    border:grey 1px solid;
+    border: grey 1px solid;
     font-size: 14px;
-    outline:none;
-    height:30px;
-    top:120px;
-    left:150px;
+    outline: none;
+    height: 30px;
+    top: 120px;
+    left: 150px;
 }
 
-#menu2{
+#menu2 {
     background-color: white;
-    border:grey 1px solid;
+    border: grey 1px solid;
     font-size: 14px;
-    outline:none;
-    height:30px;
-    top:120px;
-    left:650px;
+    outline: none;
+    height: 30px;
+    top: 120px;
+    left: 650px;
 }
-
-
 </style>
 
 <body>
-   <!--  <div class="bs-example">
+    <!--  <div class="bs-example">
     <ul class="nav nav-pills" role="tablist">
       <li role="presentation" class="dropdown">
         <a id="drop5" data-target="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -153,15 +150,12 @@ li a {
       </li>
     </ul> 
   </div>  -->
-
     <div id="candidate_one" style="float:left">
-        <img src="trump.png" >
+        <img src="trump.png">
     </div>
-
     <div id="candidate_two" style="float:left">
         <img src="bush.png">
     </div>
-
     <div id="graphic"></div>
     <script src="http://d3js.org/d3.v3.js"></script>
     <script>
@@ -251,44 +245,59 @@ li a {
             // Add the dropdown menus
 
             var dropDown1 = d3.select("#graphic").append("select")
-                            .attr("name","candidate-list")
-                            .style("position","absolute")
-                            .attr("id","menu1");
+                .attr("name", "candidate-list")
+                .style("position", "absolute")
+                .attr("id", "menu1");
 
-            var options = dropDown1.selectAll("option")
-                .data(dataAll.filter(function(d,i){
-                    if(d.debate === "1" & d.state === "CA"){
+            dropDown1.on("change", menuChanged1)
+
+            var options1 = dropDown1.selectAll("option")
+                .data(dataAll.filter(function(d, i) {
+                    if (d.debate === "1" & d.state === "CA") {
                         return d;
                     }
                 }))
                 .enter()
                 .append("option")
-                .text(function(d){return d.candidate;})
-                .attr("value", function(d){ return d.candidate;});
+                .attr("value", function(d) {
+                    return d.candidate;
+                })
+                .attr("selected", function(d) {
+                    return d.candidate === "Donald Trump"
+                })
+                .text(function(d) {
+                    return d.candidate;
+                });
 
             var dropDown2 = d3.select("#graphic").append("select")
-                            .attr("name","candidate-list")
-                            .style("position","absolute")
-                            .attr("id","menu2");
+                .attr("name", "candidate-list")
+                .style("position", "absolute")
+                .attr("id", "menu2");
 
-            var options = dropDown2.selectAll("option")
-                .data(dataAll.filter(function(d,i){
-                    if(d.debate === "1" & d.state === "CA"){
+            dropDown2.on("change", menuChanged2)
+
+            var options2 = dropDown2.selectAll("option")
+                .data(dataAll.filter(function(d, i) {
+                    if (d.debate === "1" & d.state === "CA") {
                         return d;
                     }
                 }))
                 .enter()
                 .append("option")
-                .text(function(d){return d.candidate;})
-                .attr("value", function(d){ return d.candidate;});
+                .text(function(d) {
+                    return d.candidate;
+                })
+                .attr("value", function(d) {
+                    return d.candidate;
+                });
 
             // End of the dropdown menus
 
             var svg = d3.select("#graphic").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
             // draw the first slopegraph
@@ -374,7 +383,7 @@ li a {
                 .attr("class", "state1");
 
             var stateline1 = states1.append("path")
-                .attr("class", "line")
+                .attr("class", "line1")
                 .attr("d", function(d) {
                     return intit(d.values);
                 })
@@ -389,51 +398,51 @@ li a {
                     return line(d.values);
                 });
 
-              stateline1.on("mouseover", function(d) {
+            stateline1.on("mouseover", function(d) {
                 states1.style("opacity", 0.2);
 
                 states2.style("opacity", 0.2);
 
                 states1.filter(function(path) {
-                    return path.key === d.key;
-                }).style("opacity", "1").style("stroke-width", 2)
-                .append("rect")
-                .attr("width", 20)
-                .attr("height", 10)
-                .attr("x", function(d) {
-                    return x(d.values[0].debate) - 25;
-                })
-                .attr("y",function(d) {
-                    return y(d.values[0].rank) + width / 5 -5;
-                })
-                .style("fill", "white")
-                .style("opacity", 1);
-                
+                        return path.key === d.key;
+                    }).style("opacity", "1").style("stroke-width", 2)
+                    .append("rect")
+                    .attr("width", 20)
+                    .attr("height", 10)
+                    .attr("x", function(d) {
+                        return x(d.values[0].debate) - 25;
+                    })
+                    .attr("y", function(d) {
+                        return y(d.values[0].rank) + width / 5 - 5;
+                    })
+                    .style("fill", "white")
+                    .style("opacity", 1);
+
                 states1.filter(function(path) {
-                    return path.key === d.key;
-                }).style("opacity", "1").style("stroke-width", 2)
-                .append("text").text(function(d) {
-                    return d.key
-                }).attr("x", function(d) {
-                    return x(d.values[0].debate) - 10;
-                }).attr("y", function(d) {
-                    return y(d.values[0].rank) + width / 5 + 5;
-                }).style("fill", "black").attr("text-anchor", "end");
+                        return path.key === d.key;
+                    }).style("opacity", "1").style("stroke-width", 2)
+                    .append("text").text(function(d) {
+                        return d.key
+                    }).attr("x", function(d) {
+                        return x(d.values[0].debate) - 10;
+                    }).attr("y", function(d) {
+                        return y(d.values[0].rank) + width / 5 + 5;
+                    }).style("fill", "black").attr("text-anchor", "end");
 
                 states2.filter(function(path) {
-                    return path.key === d.key;
-                }).style("opacity", "1").style("stroke-width", 2)
-                .append("rect")
-                .attr("width", 20)
-                .attr("height", 10)
-                .attr("x", function(d) {
-                    return x(d.values[2].debate) + .6 * width + 10;
-                })
-                .attr("y",function(d) {
-                    return y(d.values[2].rank) + width / 5 - 5;
-                })
-                .style("fill", "white")
-                .style("opacity", 1);
+                        return path.key === d.key;
+                    }).style("opacity", "1").style("stroke-width", 2)
+                    .append("rect")
+                    .attr("width", 20)
+                    .attr("height", 10)
+                    .attr("x", function(d) {
+                        return x(d.values[2].debate) + .6 * width + 10;
+                    })
+                    .attr("y", function(d) {
+                        return y(d.values[2].rank) + width / 5 - 5;
+                    })
+                    .style("fill", "white")
+                    .style("opacity", 1);
 
 
                 states2.filter(function(path) {
@@ -544,7 +553,7 @@ li a {
                 .attr("class", "state2");
 
             var stateline2 = states2.append("path")
-                .attr("class", "line")
+                .attr("class", "line2")
                 .attr("id", function(d) {
                     return d.key;
                 })
@@ -567,45 +576,45 @@ li a {
                 states2.style("opacity", 0.2);
 
                 states1.filter(function(path) {
-                    return path.key === d.key;
-                }).style("opacity", "1").style("stroke-width", 2)
-                .append("rect")
-                .attr("width", 20)
-                .attr("height", 10)
-                .attr("x", function(d) {
-                    return x(d.values[0].debate) - 25;
-                })
-                .attr("y",function(d) {
-                    return y(d.values[0].rank) + width / 5 -5;
-                })
-                .style("fill", "white")
-                .style("opacity", 1);
-                
+                        return path.key === d.key;
+                    }).style("opacity", "1").style("stroke-width", 2)
+                    .append("rect")
+                    .attr("width", 20)
+                    .attr("height", 10)
+                    .attr("x", function(d) {
+                        return x(d.values[0].debate) - 25;
+                    })
+                    .attr("y", function(d) {
+                        return y(d.values[0].rank) + width / 5 - 5;
+                    })
+                    .style("fill", "white")
+                    .style("opacity", 1);
+
                 states1.filter(function(path) {
-                    return path.key === d.key;
-                }).style("opacity", "1").style("stroke-width", 2)
-                .append("text").text(function(d) {
-                    return d.key
-                }).attr("x", function(d) {
-                    return x(d.values[0].debate) - 10;
-                }).attr("y", function(d) {
-                    return y(d.values[0].rank) + width / 5 + 5;
-                }).style("fill", "black").attr("text-anchor", "end");
+                        return path.key === d.key;
+                    }).style("opacity", "1").style("stroke-width", 2)
+                    .append("text").text(function(d) {
+                        return d.key
+                    }).attr("x", function(d) {
+                        return x(d.values[0].debate) - 10;
+                    }).attr("y", function(d) {
+                        return y(d.values[0].rank) + width / 5 + 5;
+                    }).style("fill", "black").attr("text-anchor", "end");
 
                 states2.filter(function(path) {
-                    return path.key === d.key;
-                }).style("opacity", "1").style("stroke-width", 2)
-                .append("rect")
-                .attr("width", 20)
-                .attr("height", 10)
-                .attr("x", function(d) {
-                    return x(d.values[2].debate) + .6 * width + 10;
-                })
-                .attr("y",function(d) {
-                    return y(d.values[2].rank) + width / 5 - 5;
-                })
-                .style("fill", "white")
-                .style("opacity", 1);
+                        return path.key === d.key;
+                    }).style("opacity", "1").style("stroke-width", 2)
+                    .append("rect")
+                    .attr("width", 20)
+                    .attr("height", 10)
+                    .attr("x", function(d) {
+                        return x(d.values[2].debate) + .6 * width + 10;
+                    })
+                    .attr("y", function(d) {
+                        return y(d.values[2].rank) + width / 5 - 5;
+                    })
+                    .style("fill", "white")
+                    .style("opacity", 1);
 
 
                 states2.filter(function(path) {
@@ -629,46 +638,108 @@ li a {
 
             });
 
+            function menuChanged1() {
+
+                var selectedCandidate = d3.event.target.value;
+
+                data1 = [];
+                data1 = dataAll.filter(function(d, i) {
+                    if (d.candidate === selectedCandidate) {
 
 
-            // dropdown menu functions
+                        return d;
+
+                    }
+
+
+                });
+
+                data1 = data1.map(function(d) {
+                    return {
+                        state: d.state,
+                        debate: +d.debate,
+                        rank: +d.rank
+                    };
+                });
+
+                data1 = d3.nest().key(function(d) {
+                    return d.state;
+                }).entries(data1);
+
+                // var values = line(data);
+
+                states1 = svg.selectAll(".state1")
+                    .data(data1, function(d) {
+                        return d.key;
+                    })
+                    .attr("class", "state1");
+
+                var stateline1 = d3.selectAll(".line1")
+                    .data(data1)
+                    .transition()
+                    .duration(1000)
+                    .attr("d", function(d, i) {
+                        return line(d.values);
+                    })
 
 
 
-            // $("#test").on("click",function(){
-
-            //       data1 = []; 
-            //       data1 = dataAll.filter(function(d,i){
-            //           if(d.candidate === "Jeb Bush"){
+            };
 
 
-            //               return d;
+            function menuChanged2() {
 
-            //           }
+                var selectedCandidate = d3.event.target.value;
+
+                data2 = [];
+                data2 = dataAll.filter(function(d, i) {
+                    if (d.candidate === selectedCandidate) {
 
 
-            //       });
+                        return d;
 
-            //       data1 = data1.map( function (d) { 
-            //           return { 
-            //             state: d.state,
-            //             debate: +d.debate,
-            //             rank: +d.rank }; 
-            //       });
+                    }
 
-            //       data1 = d3.nest().key(function(d) { return d.state; }).entries(data1);
 
-            //       // var values = line(data);
+                });
 
-            //       d3.selectAll(".line")
-            //         .data(data1)
-            //         .transition()
-            //         .duration(1000)
-            //         .attr("d", function(d, i){ return line(d.values); });
+                data2 = data2.map(function(d) {
+                    return {
+                        state: d.state,
+                        debate: +d.debate,
+                        rank: +d.rank
+                    };
+                });
 
-            //   });
+                data2 = d3.nest().key(function(d) {
+                    return d.state;
+                }).entries(data2);
 
-            // });
+                // var values = line(data);
+
+                states2 = svg.selectAll(".state2")
+                    .data(data2, function(d) {
+                        return d.key;
+                    })
+                    .attr("class", "state2");
+
+                var stateline2 = d3.selectAll(".line2")
+                    .data(data2)
+                    .transition()
+                    .duration(1000)
+                    .attr("d", function(d, i) {
+                        return line(d.values);
+                    })
+
+
+
+            };
+
+
+
+
+
+
 
 
 
