@@ -125,6 +125,10 @@ li a {
     top: 120px;
     left: 650px;
 }
+
+#subtitle{
+    font-size: 11px;
+}
 </style>
 
 <body>
@@ -370,10 +374,10 @@ li a {
                 .attr("transform", "rotate(-90)")
                 // .attr("x", -height / 2 - 30)
                 // .attr("y", 200)
-                .attr("dx", "-2.5em")
+                .attr("dx", "-11em")
                 .attr("dy","-2.5em")
                 .style("text-anchor", "center")
-                .text("(Rank)")
+                .text("(Rankings of all 50 states)")
                 .attr("id", "subtitle");
 
 
@@ -550,7 +554,7 @@ li a {
                 .attr("dx", "-.4em")
                 .attr("dy","-2.5em")
                 .style("text-anchor", "center")
-                .text("(Rank)")
+                .text("(Rankings of all 50 states)")
                 .attr("id", "subtitle");
 
             svg.append("g")
